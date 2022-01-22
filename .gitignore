@@ -490,4 +490,4 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/macos,homebrew,visualstudiocode,python,jupyternotebooks,latex
 t_e_s_t/
 data/dataset/
-data/original_rembrandt.zip
+data/original_rembrandt/original_rembrandt.zip
