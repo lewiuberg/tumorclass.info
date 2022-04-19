@@ -37,6 +37,14 @@ graphviz = "^0.19.1"
 pydot = "^1.4.2"
 pyTsetlinMachine = "^0.6.2"
 opencv-python = "^4.5.5"
+shap = "^0.40.0"
+image-classifiers = "^1.0.0"
+Flask = "2.0.3"
+fastapi = "^0.75.1"
+uvicorn = "^0.17.6"
+python-multipart = "^0.0.5"
+Jinja2 = "^3.1.1"
+confprint = "^0.5.1"
 
 
 [tool.poetry.dev-dependencies]

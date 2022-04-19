@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" href="assets/images/favicon/icon32x32.png" sizes="32x32" />
+    <link
+      href="{{ url_for('assets', path='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+
+    {% endblock %}
+    <title>{% block title %}{% endblock %} Tumorclass.info</title>
+  </head>
+
+  <body>
+    {% block content %}{% endblock %}
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  {% block scripts %}{% endblock %}
+</html>

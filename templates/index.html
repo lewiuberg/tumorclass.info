@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Home {% endblock %} {% block head %}
+{{ super() }} {% endblock %} {% block content %}
+<h1>Predict Brain Tumor</h1>
+<!-- use predict from app to upload an image, dispaly it and display the returned prediction -->
+<form
+  action="{{ url_for('predict') }}"
+  method="post"
+  enctype="multipart/form-data"
+>
+  <div class="form-group">
+    <label for="file">Upload an image</label>
+    <input type="file" class="form-control-file" id="file" name="file" />
+  </div>
+  <img id="selected-image" src="" width="400" height="400" />
+  <button type="submit" class="btn btn-primary">Predict</button>
+  <p id="prediction" style="white-space: pre-wrap"></p>
+</form>
+
+{% endblock %} {% block scripts %} {{ super() }}
+<script>
+  // when we upload an image -->
+  $("#file").change(function () {
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      let dataURL = reader.result;
+      $("#selected-image").attr("src", dataURL);
+    };
+    reader.readAsDataURL($("#file")[0].files[0]);
+  });
+</script>
+{% endblock %}

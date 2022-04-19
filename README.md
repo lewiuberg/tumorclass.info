@@ -3,6 +3,7 @@
 # Data Science Template
 
 **Data Science Template** is a template repository for data science projects.
+
 ## Badges
 
 Add badges from somewhere like: [shields.io](https://shields.io/)
@@ -11,7 +12,6 @@ Add badges from somewhere like: [shields.io](https://shields.io/)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
-
 ## Features
 
 - Light/dark mode toggle
@@ -19,23 +19,19 @@ Add badges from somewhere like: [shields.io](https://shields.io/)
 - Fullscreen mode
 - Cross platform
 
-
 ## Tech Stack
 
 **Client:** React, Redux, TailwindCSS
 
 **Server:** Node, Express
 
-
 ## Demo
 
 Insert gif or link to demo
 
-
 ## Screenshots
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
 
 ## Installation
 
@@ -54,7 +50,6 @@ To run this project, you will need to add the following environment variables to
 
 `ANOTHER_API_KEY`
 
-
 ## Deployment
 
 To deploy this project run
@@ -63,7 +58,6 @@ To deploy this project run
   npm run deploy
 ```
 
-  
 ## Run Locally
 
 Clone the project
@@ -90,7 +84,6 @@ Start the server
   flask run
 ```
 
-
 ## Usage/Examples
 
 ```python
@@ -113,7 +106,6 @@ dfa = VisualDFA(
 )
 ```
 
-
 ## Running Tests
 
 To run tests, run the following command
@@ -121,7 +113,6 @@ To run tests, run the following command
 ```bash
   pytest -vs
 ```
-
 
 ## API Reference
 
@@ -149,7 +140,7 @@ To run tests, run the following command
 
 Takes two numbers and returns the sum.
 
-  ## Color Reference
+## Color Reference
 
 | Color         | Hex                                                              |
 | ------------- | ---------------------------------------------------------------- |
@@ -158,21 +149,17 @@ Takes two numbers and returns the sum.
 | Example Color | ![#00b48a](https://via.placeholder.com/10/00b48a?text=+) #00b48a |
 | Example Color | ![#00d1a0](https://via.placeholder.com/10/00b48a?text=+) #00d1a0 |
 
-
 ## Documentation
 
 [Documentation](https://linktodocumentation)
-
 
 ## Appendix
 
 Any additional information goes here
 
-
 ## Optimizations
 
 What optimizations did you make in your code? E.g. refactors, performance improvements, accessibility
-
 
 ## Roadmap
 
@@ -180,18 +167,15 @@ What optimizations did you make in your code? E.g. refactors, performance improv
 
 - Add more integrations
 
-
 ## Related
 
 Here are some related projects
 
 [Awesome README](https://github.com/matiassingers/awesome-readme)
 
-
 ## Lessons Learned
 
 What did you learn while building this project? What challenges did you face and how did you overcome them?
-
 
 ## FAQ
 
@@ -203,16 +187,13 @@ Answer 1
 
 Answer 2
 
-
 ## Feedback
 
 If you have any feedback, please reach out to us at fake@fake.com
 
-
 ## Support
 
 For support, email fake@fake.com or join our Slack channel.
-
 
 ## Used By
 
@@ -221,17 +202,15 @@ This project is used by the following companies:
 - Company 1
 - Company 2
 
-
 ## Authors
 
 - [@lewiuberg](https://www.github.com/lewiuberg)
 
-
 ## Acknowledgements
 
- - [Data Science Simplified](https://mathdatasimplified.com) for all her amazing tips.
- - [The realpython community](https://realpython.com/community/) for all their great feedback and help.
- - [readme.so](https://readme.so/editor) for helping in making amazing readme's.
+- [Data Science Simplified](https://mathdatasimplified.com) for all her amazing tips.
+- [The realpython community](https://realpython.com/community/) for all their great feedback and help.
+- [readme.so](https://readme.so/editor) for helping in making amazing readme's.
 
 ## Contributing
 
@@ -241,8 +220,6 @@ See `contributing.md` for ways to get started.
 
 Please adhere to this project's `code of conduct`.
 
-
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
