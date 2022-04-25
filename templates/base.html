@@ -1,23 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% block style %}
+  <style type="text/css">
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 20px;
+      /* padding: 20px; */
+    }
+  </style>
+  {% endblock %}
   <head>
-    {% block head %}
+    {% include "navbar.html" %} {% block head %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="icon" href="assets/images/favicon/icon32x32.png" sizes="32x32" />
-    <link
-      href="{{ url_for('assets', path='css/bootstrap.min.css') }}"
-      rel="stylesheet"
-    />
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" />
 
     {% endblock %}
     <title>{% block title %}{% endblock %} Tumorclass.info</title>
   </head>
 
+  {% include 'footer.html' %}
   <body>
     {% block content %}{% endblock %}
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
   </body>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   {% block scripts %}{% endblock %}

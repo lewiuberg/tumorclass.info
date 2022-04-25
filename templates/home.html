@@ -1,0 +1,268 @@
+{% extends "base.html" %} {% set active_page = "home" %} {% block title %}Home
+-{% endblock %} {% block head %} {{ super() }} {% endblock %} {% block content
+%}
+<style>
+  .parent {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 0.1fr 2.5fr 0.15fr 0.75fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    padding: 20px;
+  }
+  .div1 {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+  .div2 {
+    grid-area: 2 / 1 / 3 / 2;
+  }
+  .div3 {
+    grid-area: 2 / 2 / 3 / 3;
+  }
+  .div4 {
+    grid-area: 3 / 1 / 4 / 3;
+  }
+  .div5 {
+    grid-area: 4 / 1 / 5 / 3;
+  }
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 20px;
+    /* padding: 20px; */
+  }
+  .table-striped {
+    color: #aaaaaa;
+  }
+  /* .table-striped > tbody > tr:nth-of-type(odd) > * { */
+  .table-striped > tbody > tr:nth-of-type(odd) {
+    --bs-table-striped-color: #aaaaaa;
+  }
+</style>
+<form
+  action="/upload"
+  method="post"
+  enctype="multipart/form-data"
+  id="uploadForm"
+>
+  <input type="file" name="file" id="stagedFile" hidden />
+</form>
+<form
+  action="/predict"
+  method="post"
+  enctype="application/x-www-form-urlencoded"
+  id="predictForm"
+>
+  <!-- send filename variable with form -->
+  <input type="hidden" name="filename" value="{{ filename }}" />
+  <!-- <input type="hidden" name="line_format" value="True" /> -->
+</form>
+
+<div class="parent">
+  <div class="div1">
+    <h2>Brain Tumor Type Classification</h2>
+  </div>
+  <div class="div2">
+    {% if not filename %}
+    <img
+      id="selectedImage"
+      src="static/images/placeholder.jpg"
+      name="selectedImage"
+      alt="Photo by National Cancer Institute on Unsplash"
+      href="https://unsplash.com/@nci?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+      height="500"
+    />
+    {% else %}
+    <img src="static/temp/{{ filename }}" alt="Uploaded Image" height="500" />
+    {% endif %}
+  </div>
+
+
+  <div class="div3">
+    <span style="vertical-align: middle">
+      {% if predictions %}
+        <h3>Predictions: {{ filename }}</h3>
+        <table class="table table-striped">
+          <tr>
+            <th>Model</th>
+            <th>Classification</th>
+            <th>Confidence</th>
+            <th>Normal</th>
+            <th>LGG</th>
+            <th>HGG</th>
+          </tr>
+          {% if "cnn_custom" in predictions.keys() %}
+          <tr>
+            <td>CNN Custom</td>
+            <td>{{ predictions.cnn_custom.classification }}</td>
+            <td>{{ predictions.cnn_custom.confidence }}</td>
+            <td>{{ predictions.cnn_custom[classes[0]] }}</td>
+            <td>{{ predictions.cnn_custom[classes[1]] }}</td>
+            <td>{{ predictions.cnn_custom[classes[2]] }}</td>
+          </tr>
+          {% endif %} {% if "cnn_vgg16" in predictions.keys() %}
+          <tr>
+            <td>CNN VGG16</td>
+            <td>{{ predictions.cnn_vgg16.classification }}</td>
+            <td>{{ predictions.cnn_vgg16.confidence }}</td>
+            <td>{{ predictions.cnn_vgg16[classes[0]] }}</td>
+            <td>{{ predictions.cnn_vgg16[classes[1]] }}</td>
+            <td>{{ predictions.cnn_vgg16[classes[2]] }}</td>
+          </tr>
+          {% endif %} {% if "cnn_mobilenet" in predictions.keys() %}
+          <tr>
+            <td>CNN MobileNet</td>
+            <td>{{ predictions.cnn_mobilenet.classification }}</td>
+            <td>{{ predictions.cnn_mobilenet.confidence }}</td>
+            <td>{{ predictions.cnn_mobilenet[classes[0]] }}</td>
+            <td>{{ predictions.cnn_mobilenet[classes[1]] }}</td>
+            <td>{{ predictions.cnn_mobilenet[classes[2]] }}</td>
+          </tr>
+          {% endif %} {% if "cnn_densenet121" in predictions.keys() %}
+          <tr>
+            <td>CNN DenseNet121</td>
+            <td>{{ predictions.cnn_densenet121.classification }}</td>
+            <td>{{ predictions.cnn_densenet121.confidence }}</td>
+            <td>{{ predictions.cnn_densenet121[classes[0]] }}</td>
+            <td>{{ predictions.cnn_densenet121[classes[1]] }}</td>
+            <td>{{ predictions.cnn_densenet121[classes[2]] }}</td>
+          </tr>
+          {% endif %}
+        </table>
+        {% for model in predictions.keys() %}
+        <p>
+          <b>{{ model.replace('_', ' ').title().replace('Cnn', 'CNN') }}</b>
+          <br />
+          <i>
+            {{ predictions[model].model_name }} indicates that there is a {{ predictions[model].confidence }} chance of having a {{ predictions[model].classification }} tumor type.
+          </i>
+        </p>
+        {% endfor %}
+      {% endif %}
+      </span>
+    </div>
+
+    <div class="div4">
+      <!-- select file for uploading -->
+      <label for="stagedFile" class="btn btn-primary">Choose a file</label>
+      <!-- upload the file -->
+      <!-- <button form="uploadForm" type="submit" class="btn btn-primary">
+      Upload
+    </button> -->
+      <!-- predict the file -->
+      {% if filename %}
+      <button form="predictForm" type="submit" class="btn btn-primary">
+        Predict
+      </button>
+      <br />
+    </div>
+
+    <div class="div5">
+      <!-- let the user select one or more cnn models using checkboxes: Custom, VGG16, MobileNet, DenseNet121 -->
+      <label for="model">Select a model:</label>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          form="predictForm"
+          type="checkbox"
+          value="True"
+          id="custom"
+          name="custom_model"
+          {%
+          if
+          custom_model
+          is
+          not
+          false
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="form-check-label" for="custom"> Custom </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          form="predictForm"
+          type="checkbox"
+          value="True"
+          id="vgg16"
+          name="vgg16_model"
+          {%
+          if
+          vgg16_model
+          is
+          not
+          false
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="form-check-label" for="vgg16"> VGG16 </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          form="predictForm"
+          type="checkbox"
+          value="True"
+          id="mobilenet"
+          name="mobilenet_model"
+          {%
+          if
+          mobilenet_model
+          is
+          not
+          false
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="form-check-label" for="mobilenet"> MobileNet </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          form="predictForm"
+          type="checkbox"
+          value="True"
+          id="densenet121"
+          name="densenet121_model"
+          {%
+          if
+          densenet121_model
+          is
+          not
+          false
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="form-check-label" for="densenet121"> DenseNet121 </label>
+      </div>
+    </div>
+  </div>
+  {% endif %} {% endblock %} {% block scripts %} {{ super() }}
+  <script>
+    // when button is clicked, set {{ clicked }} to true
+    $("#stagedFile").change(function () {
+      $("#uploadForm").submit();
+      let reader = new FileReader();
+      reader.onload = function (e) {
+        let dataURL = reader.result;
+        $("#selectedImage").attr("src", dataURL);
+      };
+      reader.readAsDataURL($("#stagedFile")[0].files[0]);
+    });
+  </script>
+  {% endblock %}
+</div>
