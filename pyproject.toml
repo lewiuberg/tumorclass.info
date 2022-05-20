@@ -5,11 +5,6 @@ description = "Classification of MRI images of Brain Tumor to help the medical d
 authors = ["Lewi Uberg <lewiuberg@icloud.com>"]
 
 
-# [[tool.poetry.source]]
-# name = "llvmlite"
-# url = "https://pypi.anaconda.org/numba/label/wheels_experimental_m1/simple"
-# default = true
-
 [tool.poetry.dependencies]
 python = ">=3.9.7,<3.10"
 # tensorflow = "^2.7.0"
@@ -33,7 +28,6 @@ keras-sequential-ascii = "^0.1.1"
 ann_visualizer = "^2.5"
 graphviz = "^0.19.1"
 pydot = "^1.4.2"
-# pyTsetlinMachine = "^0.6.2"
 opencv-python = "^4.5.5"
 # shap = "^0.40.0"
 image-classifiers = "^1.0.0"
@@ -45,24 +39,8 @@ Jinja2 = "^3.1.1"
 confprint = "^0.5.1"
 aiofiles = "^0.8.0"
 
-# tensorflow-metal = "^0.4.0"
-# brew install hdf5
-# export HDF5_DIR="$(brew --prefix hdf5)"
-# tensorflow-macos = "^2.8.0"
-
 
 [tool.poetry.dev-dependencies]
-# peodd = "^0.3.0"  # Usage: poetry run peodd -o requirements-dev.txt
-# plaidml-keras = "^0.7.0"
-# pytest = "^6.2.5"
-# pytest-cov = "^3.0.0"
-# pytest-sugar = "^0.9.4"
-# debugpy = "^1.5.1"
-# black = "21.7b0"
-# flake8 = "^4.0.1"
-# isort = "^5.10.1"
-# mypy = "^0.920"
-# pydocstyle = "^6.1.1"
 peodd = "^0.4.0"  # Usage: poetry run peodd -o requirements-dev.txt
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
@@ -123,3 +101,8 @@ exclude_lines = [
     "pragma: no cover",
     "if TYPE_CHECKING:"
 ]
+
+[env]
+classes = ["normal", "lgg", "hgg"]
+width = 224
+height = 224

@@ -2,7 +2,6 @@ import os
 import shutil
 from pathlib import Path
 
-# import numpy as np
 import uvicorn
 from confprint import prefix_printer
 from fastapi import FastAPI, File, Form, Request, Response, UploadFile
@@ -11,15 +10,17 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from modules.model import predicts
+from pyconfs import Configuration
 from tensorflow.keras.models import load_model
 from tensorflow.python.keras.models import Functional, Sequential
 
 
 PROJECT_ROOT = Path(__file__).parent.parent
-
-CLASSES = ["normal", "lgg", "hgg"]
 MODELS_PATH = f"{PROJECT_ROOT}/models"
-WIDTH_HEIGHT = (224, 224)
+
+cfg = Configuration.from_file(f"{PROJECT_ROOT}/pyproject.toml")
+CLASSES = cfg.env.classes
+WIDTH_HEIGHT = (cfg.env.width, cfg.env.height)
 
 cnn_custom: Sequential = load_model(f"{MODELS_PATH}/cnn_custom_model.h5")
 cnn_vgg16: Functional = load_model(f"{MODELS_PATH}/cnn_vgg16_model.h5")
@@ -74,22 +75,73 @@ templates = Jinja2Templates(directory=str(project_root / "templates"))
 # get index page
 @app.get("/", response_class=HTMLResponse)
 def get_home(request: Request):
+    """
+    Get the home page.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+
+    Returns
+    -------
+    HTMLResponse
+        The home page.
+    """
     return templates.TemplateResponse("home.html", {"request": request})
 
 
 @app.get("/about", response_class=HTMLResponse)
 def get_about(request: Request):
+    """
+    Get the about page.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+
+    Returns
+    -------
+    HTMLResponse
+        The about page.
+    """
     return templates.TemplateResponse("about.html", {"request": request})
 
 
 @app.get("/data", response_class=HTMLResponse)
 def get_data(request: Request):
+    """
+    Get the data page.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+
+    Returns
+    -------
+    HTMLResponse
+        The data page.
+    """
     return templates.TemplateResponse("data.html", {"request": request})
 
 
 @app.get("/literature-review", response_class=HTMLResponse)
 def get_literature_review(request: Request):
-    # return StaticFiles
+    """
+    Get the literature review page.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+
+    Returns
+    -------
+    HTMLResponse
+        The literature review page.
+    """
     return Response(
         content=open(
             f"{PROJECT_ROOT}/static/html/literature-review.html", "rb"
@@ -100,6 +152,19 @@ def get_literature_review(request: Request):
 
 @app.get("/conference-paper", response_class=HTMLResponse)
 def get_conference_paper(request: Request):
+    """
+    Get the conference paper page.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+
+    Returns
+    -------
+    HTMLResponse
+        The conference paper page.
+    """
     return templates.TemplateResponse(
         "conference-paper.html", {"request": request}
     )
@@ -107,6 +172,21 @@ def get_conference_paper(request: Request):
 
 @app.post("/upload")
 def upload_file(request: Request, file: UploadFile = File(...)):
+    """
+    Upload a file.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+    file : UploadFile, optional
+        The file to upload.
+
+    Returns
+    -------
+    HTMLResponse
+        The home page.
+    """
     p_information("Uploading file...")
     # get the file.filename extension and rename it to f'image.{extension}
     # file.filename = f"image.{file.filename.split('.')[-1]}"
@@ -123,6 +203,19 @@ def upload_file(request: Request, file: UploadFile = File(...)):
 
 @app.get("/delete")
 def delete_file(request: Request):
+    """
+    Delete the uploaded file.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+
+    Returns
+    -------
+    HTMLResponse
+        The home page.
+    """
     p_information("Deleting file...")
     # get the file name from the request
     filename = request.query_params["filename"]
@@ -145,6 +238,31 @@ def prediction(
     densenet121_model: bool = Form(False),
     alexnet_model: bool = Form(False),
 ):
+    """
+    Predict the tumor type.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+    filename : str, optional
+        The file name.
+    custom_model : bool, optional
+        Whether to use the custom model.
+    vgg16_model : bool, optional
+        Whether to use the vgg16 model.
+    mobilenet_model : bool, optional
+        Whether to use the mobilenet model.
+    densenet121_model : bool, optional
+        Whether to use the densenet121 model.
+    alexnet_model : bool, optional
+        Whether to use the alexnet model.
+
+    Returns
+    -------
+    HTMLResponse
+        The home page.
+    """
     selected_models = {}
     if vgg16_model:
         selected_models["cnn_vgg16"] = cnn_vgg16
@@ -181,6 +299,11 @@ def prediction(
 
 @app.on_event("startup")
 async def startup():
+    """
+    Startup event.
+
+    Makes a temp folder to store the uploaded files.
+    """
     p_information("Starting app...")
     if not os.path.exists(project_root / "static" / "temp"):
         os.mkdir(project_root / "static" / "temp")
@@ -188,6 +311,11 @@ async def startup():
 
 @app.on_event("shutdown")
 async def shutdown():
+    """
+    Shutdown event.
+
+    Deletes the temp folder.
+    """
     p_information("Shutting down...")
     shutil.rmtree(project_root / "static" / "temp")
 
@@ -195,7 +323,6 @@ async def shutdown():
 if __name__ == "__main__":
     # Not used when running VSCode Run and Debug
     print("Running without VSCode Run and Debug")
-    from pyconfs import Configuration
 
     launch = Configuration.from_file(f"{PROJECT_ROOT}/.vscode/launch.json")
     uvicorn.run(

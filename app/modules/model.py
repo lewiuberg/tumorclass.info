@@ -2,16 +2,18 @@ from pathlib import Path
 from typing import Union
 
 import numpy as np
+from pyconfs import Configuration
 from tensorflow import expand_dims
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from tensorflow.python.keras.models import Functional, Sequential
 
 
 PROJECT_ROOT = Path(__file__).parent.parent
-
-CLASSES = ["normal", "lgg", "hgg"]
 MODELS_PATH = f"{PROJECT_ROOT}/models"
-WIDTH_HEIGHT = (224, 224)
+
+cfg = Configuration.from_file(f"{PROJECT_ROOT.parent}/pyproject.toml")
+CLASSES = cfg.env.classes
+WIDTH_HEIGHT = (cfg.env.width, cfg.env.height)
 
 
 def predict(
@@ -30,12 +32,12 @@ def predict(
         The model to use for prediction.
     model_name : str
         The name of the model.
-    path : str
-        Path to the image. Default: MODELS_PATH
-    target_size : tuple
-        The target size of the image. Default: WIDTH_HEIGHT
-    classes : list
-        The list of classes. Default: CLASSES
+    path : str, optional
+        Path to the image, by default MODELS_PATH.
+    target_size : tuple, optional
+        The target size of the image, by default WIDTH_HEIGHT.
+    classes : list, optional
+        The list of classes, by default CLASSES.
 
     Returns
     -------
@@ -66,7 +68,6 @@ def predicts(
     path: str = MODELS_PATH,
     target_size: tuple = WIDTH_HEIGHT,
     classes: list = CLASSES,
-    line_format: bool = False,
 ) -> dict:
     """
     Predict the class of an image.
@@ -75,12 +76,12 @@ def predicts(
     ----------
     models : dict
         The models to use for prediction.
-    path : str
-        Path to the image.
-    target_size : tuple
-        The target size of the image.
-    classes : list
-        The list of classes.
+    path : str, optional
+        Path to the image, by default MODELS_PATH.
+    target_size : tuple, optional
+        The target size of the image, by default WIDTH_HEIGHT.
+    classes : list, optional
+        The list of classes, by default CLASSES.
 
     Returns
     -------
@@ -101,7 +102,4 @@ def predicts(
 
         predictions[model_name] = temp_prediction
 
-    if line_format:
-        return format_predictions(predictions=predictions)
-    else:
-        return predictions
+    return predictions
