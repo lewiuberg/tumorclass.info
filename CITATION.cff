@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Tumorclass.info"
+abstract: "Tumorclass.info is a web-based platform for the identification of cancer subtypes LGG and HGG."
+authors:
+  - family-names: "Lie Uberg"
+    given-names: Lewi
+    orcid: "https://orcid.org/0000-0001-8839-0960"
+version: 0.1.0
+date-released: 2022-05-25
+repository-code: "https://github.com/lewiuberg/tumorclass.info"
+license: MIT
+keywords:
+  - "cancer"
+  - "low-grade glioma"
+  - "high-grade glioma"
+  - "glioblastoma multiforme"
+  - "glioblastoma"
+  - "glioma"
+  - "cnn"
+  - "convolutional neural network"
+  - "deep learning"
+  - "tumorclass.info"
+  - "vgg"
+  - "vgg16"
+  - "mobilenet"
+  - "alexnet"
+  - "densenet"
+  - "densenet121"
