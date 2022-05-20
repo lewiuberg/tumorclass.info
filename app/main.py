@@ -2,18 +2,17 @@ import os
 import shutil
 from pathlib import Path
 
+# import numpy as np
+import uvicorn
 from confprint import prefix_printer
 from fastapi import FastAPI, File, Form, Request, Response, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from modules.model import predicts
 from tensorflow.keras.models import load_model
 from tensorflow.python.keras.models import Functional, Sequential
-
-
-# import numpy as np
-# import uvicorn
 
 
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -28,6 +27,7 @@ cnn_mobilenet: Sequential = load_model(f"{MODELS_PATH}/cnn_mobilenet_model.h5")
 cnn_densenet121: Functional = load_model(
     f"{MODELS_PATH}/cnn_densenet121_model.h5"
 )
+cnn_alexnet: Functional = load_model(f"{MODELS_PATH}/cnn_alexnet_model.h5")
 
 p_information = prefix_printer(
     "INFO",
@@ -48,6 +48,16 @@ app = FastAPI(
         # "oauth2RedirectUrl": config.async_api.auth.oauth2_url,  # <-- Future?
     },
     debug=True,
+)
+
+origins = ["http://localhost:8000"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 project_root = Path(__file__).parent.parent
@@ -90,7 +100,9 @@ def get_literature_review(request: Request):
 
 @app.get("/conference-paper", response_class=HTMLResponse)
 def get_conference_paper(request: Request):
-    return "/static/html/literature-review.html"
+    return templates.TemplateResponse(
+        "conference-paper.html", {"request": request}
+    )
 
 
 @app.post("/upload")
@@ -109,6 +121,20 @@ def upload_file(request: Request, file: UploadFile = File(...)):
     )
 
 
+@app.get("/delete")
+def delete_file(request: Request):
+    p_information("Deleting file...")
+    # get the file name from the request
+    filename = request.query_params["filename"]
+    # use static mount to delete the file from the temp folder
+    file_path = str(project_root / "static" / "temp" / filename)
+    # file_path = Path(project_root / "temp" / filename)
+    os.remove(file_path)
+    return templates.TemplateResponse(
+        "home.html", {"request": request, "filename": None}
+    )
+
+
 @app.post("/predict")
 def prediction(
     request: Request,
@@ -117,14 +143,17 @@ def prediction(
     vgg16_model: bool = Form(False),
     mobilenet_model: bool = Form(False),
     densenet121_model: bool = Form(False),
+    alexnet_model: bool = Form(False),
 ):
     selected_models = {}
-    if custom_model:
-        selected_models["cnn_custom"] = cnn_custom
     if vgg16_model:
         selected_models["cnn_vgg16"] = cnn_vgg16
     if mobilenet_model:
         selected_models["cnn_mobilenet"] = cnn_mobilenet
+    if custom_model:
+        selected_models["cnn_custom"] = cnn_custom
+    if alexnet_model:
+        selected_models["cnn_alexnet"] = cnn_alexnet
     if densenet121_model:
         selected_models["cnn_densenet121"] = cnn_densenet121
     # get filename from the request
@@ -145,6 +174,7 @@ def prediction(
             "vgg16_model": vgg16_model,
             "mobilenet_model": mobilenet_model,
             "densenet121_model": densenet121_model,
+            "alexnet_model": alexnet_model,
         },
     )
 
@@ -162,9 +192,16 @@ async def shutdown():
     shutil.rmtree(project_root / "static" / "temp")
 
 
-# TODO: Submit 2 supervisor reports, one for today, and one for Friday.
-# TODO: Make a Flowchart of the custom CNN.
-# TODO: Make diagram of architecture(s).
-# TODO: Finalise the "webpage" <- Printscreens
-# TODO: Expand on the Lit. Rev. by looking at the guidelines to make the thesis
-# TODO: Look for more testing data.
+if __name__ == "__main__":
+    # Not used when running VSCode Run and Debug
+    print("Running without VSCode Run and Debug")
+    from pyconfs import Configuration
+
+    launch = Configuration.from_file(f"{PROJECT_ROOT}/.vscode/launch.json")
+    uvicorn.run(
+        "main:app",
+        host=launch["configurations"][1]["args"][3],
+        port=int(launch["configurations"][1]["args"][5]),
+        log_level="info",
+        reload=True,
+    )

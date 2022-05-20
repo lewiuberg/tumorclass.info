@@ -1,4 +1,88 @@
 {% extends "base.html" %} {% set active_page = "about" %} {% block title %}About
 -{% endblock %} {% block head %} {{ super() }} {% endblock %} {% block content
-%} {% include "coming_soon.html" %} {% endblock %} {% block scripts %} {{
-super() }} {% endblock %}
+%}
+
+<style>
+  .div1 {
+    padding: 20px;
+  }
+</style>
+
+<div class="div1">
+  <h2>About</h2>
+  <br />
+
+  <h4>What is this?</h4>
+  <p>
+    Tumorclass.info is a web application that allows users to upload MRI images
+    of tumors and classify them into NORMAL (no tumor found), LGG (low grade
+    glioma), and HGG (high grade glioma).
+  </p>
+
+  <h4>What data is used?</h4>
+  <p>
+    The dataset used for training the model is the
+    <a href="https://wiki.cancerimagingarchive.net/display/Public/REMBRANDT">
+      The REMBRANDT</a
+    >
+    (REpository for Molecular BRAin Neoplasia DaTa) Dataset from The Cancer
+    Imaging Archive (TCIA). The data set used is a smaller subset of the
+    original manually labeled and provided by
+    <a href="https://www.mdpi.com/2076-3417/8/1/27">Dr. Saed Khawaldeh</a>.
+    <br />
+    <small>
+      <em
+        >Note! Some augmentation (primarily rotation and flipping) is done on
+        the dataset due to its relatively small size.</em
+      >
+    </small>
+  </p>
+
+  <h4>How is the classification model implemented?</h4>
+  <p>
+    The Convoluted Neural Networks (CNN) architectures are implemented in
+    TensorFlow/Keras. Some by loading model architectures and imagenet weights
+    from tensorflow, others by building the model from scratch.
+  </p>
+
+  <h4>How is the model trained?</h4>
+  <p>
+    All the models share the same preprocessing and training pipeline. The
+    pipeline is lets the user easily fine-tune the hyperparameters, change
+    optimizer, number of epochs, callbacks, etc.
+  </p>
+
+  <h4>How is the this website implemented?</h4>
+  <p>
+    The website is built using Python, FastAPI, and Jinja2 templating engine.
+  </p>
+
+  <h4>What happens to uploaded images?</h4>
+  <p>
+    The images are uploaded to the server and then processed by the model. Since
+    underlying functions don't handle in-memory images, the images are stored on
+    the server. Everytime the server restarts all uploaded images are deleted.
+    Other than that, there are no other automated processes that delete images.
+    But by clicking the "Delete" button, the user can delete the image.
+  </p>
+
+  <h4>How can I contribute?</h4>
+  <p>
+    If you have access to a dataset manually annotated (NORMAL, LGG, or HGG) by
+    radiologist, neurologists, or other applicable professionals please contact
+    me at
+    <a href="mailto:lewi@uberg.me">lewi@uberg.me</a>
+  </p>
+
+  <h4>What is it for?</h4>
+  <p>
+    It is part of the senior year project for
+    <a
+      href="https://www.noroff.no/en/studies/university-college/applied-data-science"
+      >Applied Data Science</a
+    >
+    at Noroff University College.
+  </p>
+</div>
+
+{% endblock %} {% block scripts %} {{ super() }} {% endblock %}

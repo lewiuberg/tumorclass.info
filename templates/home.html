@@ -1,29 +1,31 @@
 {% extends "base.html" %} {% set active_page = "home" %} {% block title %}Home
 -{% endblock %} {% block head %} {{ super() }} {% endblock %} {% block content
 %}
+
 <style>
   .parent {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 0.1fr 2.5fr 0.15fr 0.75fr;
+    grid-template-columns: 0.15fr 1fr;
+    grid-template-rows: 0.05fr 1fr 0.1fr 0.25fr;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     padding: 20px;
   }
   .div1 {
-    grid-area: 1 / 1 / 2 / 3;
+    grid-area: 1 / 1 / 2 / 2;
   }
   .div2 {
     grid-area: 2 / 1 / 3 / 2;
   }
   .div3 {
-    grid-area: 2 / 2 / 3 / 3;
+    grid-area: 3 / 1 / 4 / 2;
   }
   .div4 {
-    grid-area: 3 / 1 / 4 / 3;
+    grid-area: 4 / 1 / 5 / 2;
   }
   .div5 {
-    grid-area: 4 / 1 / 5 / 3;
+    grid-area: 1 / 2 / 5 / 3;
+    padding-top: 5px;
   }
   .footer {
     position: fixed;
@@ -38,6 +40,13 @@
   /* .table-striped > tbody > tr:nth-of-type(odd) > * { */
   .table-striped > tbody > tr:nth-of-type(odd) {
     --bs-table-striped-color: #aaaaaa;
+  }
+  .pred_img {
+    width: 550px;
+    height: 550px;
+    object-fit: contain;
+    object-position: left top;
+    float: left;
   }
 </style>
 <form
@@ -58,6 +67,15 @@
   <input type="hidden" name="filename" value="{{ filename }}" />
   <!-- <input type="hidden" name="line_format" value="True" /> -->
 </form>
+<form
+  action="/delete"
+  method="get"
+  enctype="application/x-www-form-urlencoded"
+  id="deleteForm"
+>
+  <!-- send filename variable with form -->
+  <input type="hidden" name="filename" value="{{ filename }}" />
+</form>
 
 <div class="parent">
   <div class="div1">
@@ -66,190 +84,227 @@
   <div class="div2">
     {% if not filename %}
     <img
+      class="pred_img"
       id="selectedImage"
       src="static/images/placeholder.jpg"
       name="selectedImage"
       alt="Photo by National Cancer Institute on Unsplash"
       href="https://unsplash.com/@nci?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
-      height="500"
     />
     {% else %}
-    <img src="static/temp/{{ filename }}" alt="Uploaded Image" height="500" />
+    <img
+      class="pred_img"
+      src="static/temp/{{ filename }}"
+      alt="Uploaded Image"
+    />
     {% endif %}
   </div>
 
-
   <div class="div3">
-    <span style="vertical-align: middle">
-      {% if predictions %}
-        <h3>Predictions: {{ filename }}</h3>
-        <table class="table table-striped">
-          <tr>
-            <th>Model</th>
-            <th>Classification</th>
-            <th>Confidence</th>
-            <th>Normal</th>
-            <th>LGG</th>
-            <th>HGG</th>
-          </tr>
-          {% if "cnn_custom" in predictions.keys() %}
-          <tr>
-            <td>CNN Custom</td>
-            <td>{{ predictions.cnn_custom.classification }}</td>
-            <td>{{ predictions.cnn_custom.confidence }}</td>
-            <td>{{ predictions.cnn_custom[classes[0]] }}</td>
-            <td>{{ predictions.cnn_custom[classes[1]] }}</td>
-            <td>{{ predictions.cnn_custom[classes[2]] }}</td>
-          </tr>
-          {% endif %} {% if "cnn_vgg16" in predictions.keys() %}
-          <tr>
-            <td>CNN VGG16</td>
-            <td>{{ predictions.cnn_vgg16.classification }}</td>
-            <td>{{ predictions.cnn_vgg16.confidence }}</td>
-            <td>{{ predictions.cnn_vgg16[classes[0]] }}</td>
-            <td>{{ predictions.cnn_vgg16[classes[1]] }}</td>
-            <td>{{ predictions.cnn_vgg16[classes[2]] }}</td>
-          </tr>
-          {% endif %} {% if "cnn_mobilenet" in predictions.keys() %}
-          <tr>
-            <td>CNN MobileNet</td>
-            <td>{{ predictions.cnn_mobilenet.classification }}</td>
-            <td>{{ predictions.cnn_mobilenet.confidence }}</td>
-            <td>{{ predictions.cnn_mobilenet[classes[0]] }}</td>
-            <td>{{ predictions.cnn_mobilenet[classes[1]] }}</td>
-            <td>{{ predictions.cnn_mobilenet[classes[2]] }}</td>
-          </tr>
-          {% endif %} {% if "cnn_densenet121" in predictions.keys() %}
-          <tr>
-            <td>CNN DenseNet121</td>
-            <td>{{ predictions.cnn_densenet121.classification }}</td>
-            <td>{{ predictions.cnn_densenet121.confidence }}</td>
-            <td>{{ predictions.cnn_densenet121[classes[0]] }}</td>
-            <td>{{ predictions.cnn_densenet121[classes[1]] }}</td>
-            <td>{{ predictions.cnn_densenet121[classes[2]] }}</td>
-          </tr>
-          {% endif %}
-        </table>
-        {% for model in predictions.keys() %}
-        <p>
-          <b>{{ model.replace('_', ' ').title().replace('Cnn', 'CNN') }}</b>
-          <br />
-          <i>
-            {{ predictions[model].model_name }} indicates that there is a {{ predictions[model].confidence }} chance of having a {{ predictions[model].classification }} tumor type.
-          </i>
-        </p>
-        {% endfor %}
-      {% endif %}
-      </span>
-    </div>
-
-    <div class="div4">
-      <!-- select file for uploading -->
-      <label for="stagedFile" class="btn btn-primary">Choose a file</label>
-      <!-- upload the file -->
-      <!-- <button form="uploadForm" type="submit" class="btn btn-primary">
+    <!-- select file for uploading -->
+    <label for="stagedFile" class="btn btn-primary">Choose a file</label>
+    <!-- upload the file -->
+    <!-- <button form="uploadForm" type="submit" class="btn btn-primary">
       Upload
     </button> -->
-      <!-- predict the file -->
-      {% if filename %}
-      <button form="predictForm" type="submit" class="btn btn-primary">
-        Predict
-      </button>
-      <br />
-    </div>
+    <!-- predict the file -->
+    {% if filename %}
+    <button form="predictForm" type="submit" class="btn btn-primary">
+      Predict
+    </button>
+    <button form="deleteForm" type="submit" class="btn btn-primary">
+      Delete
+    </button>
+    <br />
+  </div>
 
-    <div class="div5">
-      <!-- let the user select one or more cnn models using checkboxes: Custom, VGG16, MobileNet, DenseNet121 -->
-      <label for="model">Select a model:</label>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          form="predictForm"
-          type="checkbox"
-          value="True"
-          id="custom"
-          name="custom_model"
-          {%
-          if
-          custom_model
-          is
-          not
-          false
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
-        <label class="form-check-label" for="custom"> Custom </label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          form="predictForm"
-          type="checkbox"
-          value="True"
-          id="vgg16"
-          name="vgg16_model"
-          {%
-          if
-          vgg16_model
-          is
-          not
-          false
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
-        <label class="form-check-label" for="vgg16"> VGG16 </label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          form="predictForm"
-          type="checkbox"
-          value="True"
-          id="mobilenet"
-          name="mobilenet_model"
-          {%
-          if
-          mobilenet_model
-          is
-          not
-          false
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
-        <label class="form-check-label" for="mobilenet"> MobileNet </label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          form="predictForm"
-          type="checkbox"
-          value="True"
-          id="densenet121"
-          name="densenet121_model"
-          {%
-          if
-          densenet121_model
-          is
-          not
-          false
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
-        <label class="form-check-label" for="densenet121"> DenseNet121 </label>
-      </div>
+  <div class="div4">
+    <!-- let the user select one or more cnn models using checkboxes: Custom, VGG16, MobileNet, DenseNet121 -->
+    <label for="model">Select a model:</label>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        form="predictForm"
+        type="checkbox"
+        value="True"
+        id="vgg16"
+        name="vgg16_model"
+        {%
+        if
+        vgg16_model
+        is
+        not
+        false
+        %}
+        checked
+        {%
+        endif
+        %}
+      />
+      <label class="form-check-label" for="vgg16"> VGG16 </label>
     </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        form="predictForm"
+        type="checkbox"
+        value="True"
+        id="mobilenet"
+        name="mobilenet_model"
+        {%
+        if
+        mobilenet_model
+        is
+        not
+        false
+        %}
+        checked
+        {%
+        endif
+        %}
+      />
+      <label class="form-check-label" for="mobilenet"> MobileNet </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        form="predictForm"
+        type="checkbox"
+        value="True"
+        id="custom"
+        name="custom_model"
+        {%
+        if
+        custom_model
+        is
+        not
+        false
+        %}
+        checked
+        {%
+        endif
+        %}
+      />
+      <label class="form-check-label" for="custom"> Custom </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        form="predictForm"
+        type="checkbox"
+        value="True"
+        id="alexnet"
+        name="alexnet_model"
+        {%
+        if
+        alexnet_model
+        is
+        not
+        false
+        %}
+        checked
+        {%
+        endif
+        %}
+      />
+      <label class="form-check-label" for="alexnet"> AlexNet </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        form="predictForm"
+        type="checkbox"
+        value="True"
+        id="densenet121"
+        name="densenet121_model"
+        {%
+        if
+        densenet121_model
+        is
+        not
+        false
+        %}
+        checked
+        {%
+        endif
+        %}
+      />
+      <label class="form-check-label" for="densenet121"> DenseNet121 </label>
+    </div>
+  </div>
+  <div class="div5">
+    {% if predictions %}
+    <h3>Predictions: {{ filename }}</h3>
+    <table class="table table-striped">
+      <tr>
+        <th>Model</th>
+        <th>Classification</th>
+        <th>Confidence</th>
+        <th>Normal</th>
+        <th>LGG</th>
+        <th>HGG</th>
+      </tr>
+      {% if "cnn_vgg16" in predictions.keys() %}
+      <tr>
+        <td>CNN VGG16</td>
+        <td>{{ predictions.cnn_vgg16.classification }}</td>
+        <td>{{ predictions.cnn_vgg16.confidence }}</td>
+        <td>{{ predictions.cnn_vgg16[classes[0]] }}</td>
+        <td>{{ predictions.cnn_vgg16[classes[1]] }}</td>
+        <td>{{ predictions.cnn_vgg16[classes[2]] }}</td>
+      </tr>
+      {% endif %} {% if "cnn_mobilenet" in predictions.keys() %}
+      <tr>
+        <td>CNN MobileNet</td>
+        <td>{{ predictions.cnn_mobilenet.classification }}</td>
+        <td>{{ predictions.cnn_mobilenet.confidence }}</td>
+        <td>{{ predictions.cnn_mobilenet[classes[0]] }}</td>
+        <td>{{ predictions.cnn_mobilenet[classes[1]] }}</td>
+        <td>{{ predictions.cnn_mobilenet[classes[2]] }}</td>
+      </tr>
+      {% endif %} {% if "cnn_custom" in predictions.keys() %}
+      <tr>
+        <td>CNN Custom</td>
+        <td>{{ predictions.cnn_custom.classification }}</td>
+        <td>{{ predictions.cnn_custom.confidence }}</td>
+        <td>{{ predictions.cnn_custom[classes[0]] }}</td>
+        <td>{{ predictions.cnn_custom[classes[1]] }}</td>
+        <td>{{ predictions.cnn_custom[classes[2]] }}</td>
+      </tr>
+      {% endif %} {% if "cnn_alexnet" in predictions.keys() %}
+      <tr>
+        <td>CNN AlexNet</td>
+        <td>{{ predictions.cnn_alexnet.classification }}</td>
+        <td>{{ predictions.cnn_alexnet.confidence }}</td>
+        <td>{{ predictions.cnn_alexnet[classes[0]] }}</td>
+        <td>{{ predictions.cnn_alexnet[classes[1]] }}</td>
+        <td>{{ predictions.cnn_alexnet[classes[2]] }}</td>
+      </tr>
+      {% endif %} {% if "cnn_densenet121" in predictions.keys() %}
+      <tr>
+        <td>CNN DenseNet121</td>
+        <td>{{ predictions.cnn_densenet121.classification }}</td>
+        <td>{{ predictions.cnn_densenet121.confidence }}</td>
+        <td>{{ predictions.cnn_densenet121[classes[0]] }}</td>
+        <td>{{ predictions.cnn_densenet121[classes[1]] }}</td>
+        <td>{{ predictions.cnn_densenet121[classes[2]] }}</td>
+      </tr>
+      {% endif %}
+    </table>
+    {% for model in predictions.keys() %}
+    <p>
+      <b>{{ model.replace('_', ' ').title().replace('Cnn', 'CNN') }}</b>
+      <br />
+      <i>
+        {% if predictions[model].classification == 'NORMAL' %} {{
+        predictions[model].model_name }} indicates that there is a {{
+        predictions[model].confidence }} chance of not having a LGG or HGG
+        tumor. {% else %} {{ predictions[model].model_name }} indicates that
+        there is a {{ predictions[model].confidence }} chance of having a {{
+        predictions[model].classification }} tumor type. {% endif %}
+      </i>
+    </p>
+    {% endfor %} {% endif %}
   </div>
   {% endif %} {% endblock %} {% block scripts %} {{ super() }}
   <script>
