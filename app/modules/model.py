@@ -22,6 +22,7 @@ def predict(
     path: str = MODELS_PATH,
     target_size: tuple = WIDTH_HEIGHT,
     classes: list = CLASSES,
+    rescale: bool = False,
 ) -> dict:
     """
     Predict the class of an image.
@@ -38,6 +39,8 @@ def predict(
         The target size of the image, by default WIDTH_HEIGHT.
     classes : list, optional
         The list of classes, by default CLASSES.
+    rescale : bool, optional
+        Whether to rescale the image, by default False.
 
     Returns
     -------
@@ -47,7 +50,10 @@ def predict(
     # load the image
     image = load_img(path=path, target_size=target_size)
     # convert the image to a numpy array
-    image = img_to_array(image)
+    if rescale:
+        image = img_to_array(image) / 255.0
+    else:
+        image = img_to_array(image)
     # expand the shape of the array to include the batch dimension
     image = expand_dims(image, axis=0)
     # predict the class of the image
@@ -68,6 +74,7 @@ def predicts(
     path: str = MODELS_PATH,
     target_size: tuple = WIDTH_HEIGHT,
     classes: list = CLASSES,
+    rescale: bool = False,
 ) -> dict:
     """
     Predict the class of an image.
@@ -82,6 +89,8 @@ def predicts(
         The target size of the image, by default WIDTH_HEIGHT.
     classes : list, optional
         The list of classes, by default CLASSES.
+    rescale : bool, optional
+        Whether to rescale the image, by default False.
 
     Returns
     -------
@@ -96,6 +105,7 @@ def predicts(
             path=path,
             target_size=target_size,
             classes=classes,
+            rescale=True if model_name == "cnn_alexnet" else rescale,
         )
 
         del temp_prediction["model_name"]
