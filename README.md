@@ -1,8 +1,23 @@
-# Tumorclass.info
+# Tumorclass.info <!-- omit in toc -->
 
 This repository contains the data set, preprocessing pipeline, CNN architecture implementations, model training and evaluation pipelines, and a simple web application for visualizing the results.
 
 Please visit [Tumorclass.info](https://tumorclass.info) website to see it in action.
+
+## Table of Contents <!-- omit in toc -->
+
+- [Citation](#citation)
+  - [APA](#apa)
+  - [BibTex](#bibtex)
+- [Preprocessing](#preprocessing)
+- [Augmentation](#augmentation)
+- [Model Training](#model-training)
+- [User Interface](#user-interface)
+  - [Screenshots of the web application](#screenshots-of-the-web-application)
+    - [Homepage](#homepage)
+    - [NORMAL prediction](#normal-prediction)
+    - [Low-grade glioma (LGG) prediction](#low-grade-glioma-lgg-prediction)
+    - [High-grade glioma (HGG) prediction](#high-grade-glioma-hgg-prediction)
 
 ## Citation
 
