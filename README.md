@@ -2,7 +2,7 @@
 
 This repository contains the data set, preprocessing pipeline, CNN architecture implementations, model training and evaluation pipelines, and a simple web application for visualizing the results.
 
-Please visit [Tumorclass.info](https://tumorclass.info) website to see it in action.
+Please visit [Tumorclass.info](https://app.tumorclass.info) website to see it in action.
 
 ## Table of Contents <!-- omit in toc -->
 
