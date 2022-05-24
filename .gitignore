@@ -491,3 +491,4 @@ cython_debug/
 t_e_s_t/
 data/dataset/
 data/original_rembrandt/original_rembrandt.zip
+static/temp

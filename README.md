@@ -28,20 +28,46 @@ year = {2022}
 }
 ```
 
-## Screenshots of the web application
+## Preprocessing
 
-### Homepage
+The preprocessing pipeline made for the original REMBRANDT dataset can be found in the [preprocessing](data/original_rembrandt/preprocessing.ipynb) notebook.
+
+## Augmentation
+
+The augmentation pipeline made for the manually labeled REMBRANDT dataset can be found in the [augmentation](notebooks/augmentation.ipynb) notebook.
+
+## Model Training
+
+The different model training pipelines can be found in the [notebooks](notebooks/) directory.
+
+## User Interface
+
+The runs from the [main.py](app/main.py) script can be found in the [app](app/) directory. This application utilizes the many of the files and subdirectories in project root directory. In order to run a local version of the application, clone this repository. After cloning, Poetry can be used to install dependencies. Since the `main.py` file is not located in the project root, you may need to export the python path using this command:
+
+```bash
+export PYTHONPATH=${PWD}/:${PWD}/app/
+```
+
+With a terminal open at the root of the project directory, run the following command to start the application:
+
+```bash
+poetry run python app/main.py
+```
+
+### Screenshots of the web application
+
+#### Homepage
 
 ![home](/static/images/home.png "homepage")
 
-### NORMAL prediction
+#### NORMAL prediction
 
 ![normal](/static/images/normal.png "normal")
 
-### Low-grade glioma (LGG) prediction
+#### Low-grade glioma (LGG) prediction
 
 ![low-grade-glioma](/static/images/lgg.png "low-grade-glioma")
 
-### High-grade glioma (HGG) prediction
+#### High-grade glioma (HGG) prediction
 
 ![high-grade-glioma](/static/images/hgg.png "high-grade-glioma")
