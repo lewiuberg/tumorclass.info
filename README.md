@@ -69,6 +69,8 @@ With a terminal open at the root of the project directory, run the following com
 poetry run python app/main.py
 ```
 
+When the application is running, you can access it at the following URL http://localhost:8000
+
 ### Screenshots of the web application
 
 #### Homepage
