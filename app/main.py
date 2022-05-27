@@ -150,6 +150,29 @@ def get_literature_review(request: Request):
     )
 
 
+@app.get("/final-degree", response_class=HTMLResponse)
+def get_final_degree(request: Request):
+    """
+    Get the final degree page.
+
+    Parameters
+    ----------
+    request : Request
+        The request object.
+
+    Returns
+    -------
+    HTMLResponse
+        The final degree page.
+    """
+    return Response(
+        content=open(
+            f"{PROJECT_ROOT}/static/html/final-degree.html", "rb"
+        ).read(),
+        media_type="text/html",
+    )
+
+
 @app.get("/conference-paper", response_class=HTMLResponse)
 def get_conference_paper(request: Request):
     """

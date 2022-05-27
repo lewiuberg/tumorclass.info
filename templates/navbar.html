@@ -32,7 +32,7 @@
         </li>
         <li class="nav-item dropdown">
           <a
-            class="nav-link dropdown-toggle {% if active_page == 'data' or active_page == 'literature-review' or active_page == 'conference-paper' %} active {% endif %}"
+            class="nav-link dropdown-toggle {% if active_page == 'data' or active_page == 'literature-review' or active_page == 'conference-paper' or active_page == 'final-degree' %} active {% endif %}"
             data-bs-toggle="dropdown"
             href="#"
             role="button"
@@ -50,6 +50,11 @@
               class="dropdown-item {% if active_page == 'literature-review' %} active {% endif %}"
               href="/literature-review"
               >Literature Review</a
+            >
+            <a
+              class="dropdown-item {% if active_page == 'final-degree' %} active {% endif %}"
+              href="/final-degree"
+              >Final Degree Paper</a
             >
             <a
               class="dropdown-item {% if active_page == 'conference-paper' %} active {% endif %}"
