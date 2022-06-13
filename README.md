@@ -1,3 +1,8 @@
+![GitHub last commit](https://img.shields.io/github/last-commit/lewiuberg/tumorclass.info)
+[![GitHub License](https://img.shields.io/github/license/lewiuberg/tumorclass.info?color=blue)](LICENSE)
+![Github Contributors](https://img.shields.io/github/contributors/lewiuberg/tumorclass.info?color=blue)
+![](https://visitor-badge.glitch.me/badge?page_id=lewiuberg.tumorclass.info)
+
 # Tumorclass.info <!-- omit in toc -->
 
 This repository contains the data set, preprocessing pipeline, CNN architecture implementations, model training and evaluation pipelines, and a simple web application for visualizing the results.
