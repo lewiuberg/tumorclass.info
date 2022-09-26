@@ -5,6 +5,8 @@
 
 # Tumorclass.info <!-- omit in toc -->
 
+The project was accepted as a short paper at the [Federated Conference on Computer Science and Information Systems (FedCSIS) International Workshop on Artificial Intelligence in Machine Vision and Graphics (AIMaViG)](https://fedcsis.org/2022/aimavig/program), and submitted for inclusion in the IEEE Xplore Digital Library and published electronically in a volume of “Annals of Computer Science and Information Systems” (ACSIS).
+
 This repository contains the data set, preprocessing pipeline, CNN architecture implementations, model training and evaluation pipelines, and a simple web application for visualizing the results.
 
 <!-- Please visit [Tumorclass.info](https://app.tumorclass.info) website to see it in action. -->
