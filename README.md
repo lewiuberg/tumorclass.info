@@ -5,12 +5,27 @@
 
 # Tumorclass.info <!-- omit in toc -->
 
-The project was accepted as a short paper at the [Federated Conference on Computer Science and Information Systems (FedCSIS) International Workshop on Artificial Intelligence in Machine Vision and Graphics (AIMaViG)](https://fedcsis.org/2022/aimavig/program), and submitted for inclusion in the IEEE Xplore Digital Library and published electronically in a volume of “Annals of Computer Science and Information Systems” (ACSIS).
+The project was accepted as a short paper at the [Federated Conference on Computer Science and Information Systems (FedCSIS) International Workshop on Artificial Intelligence in Machine Vision and Graphics (AIMaViG)](https://fedcsis.org/2022/aimavig/program), and submitted for inclusion in the [IEEE Xplore Digital Library](https://ieeexplore.ieee.org/document/9908993) and published electronically in a volume of [Annals of Computer Science and Information Systems” (ACSIS)](https://annals-csis.org/proceedings/2022/drp/pdf/69.pdf).
 
 This repository contains the data set, preprocessing pipeline, CNN architecture implementations, model training and evaluation pipelines, and a simple web application for visualizing the results.
 
 <!-- Please visit [Tumorclass.info](https://app.tumorclass.info) website to see it in action. -->
 Please find my Final Degree Project in my portfolio here: https://uberg.me/portfolio/
+
+If you wish to cite the paper, please do it as such:
+```BibTex
+@inproceedings{Uberg_2022,
+    author = {Uberg, Lewi L. and Kadry, Seifedine},
+    doi = {10.15439/2022f69},
+    url = {https://doi.org/10.15439%2F2022f69},
+    year = {2022},
+    month = {sep},
+    pages = {201-204},
+    publisher = {{IEEE}},
+    title = {Analysis of Brain Tumor Using {MRI} Images},
+    booktitle = {Annals of Computer Science and Information Systems}
+} 
+```
 
 ## Table of Contents <!-- omit in toc -->
 
